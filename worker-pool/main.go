@@ -5,21 +5,26 @@ import (
 	"time"
 )
 
-func worker(id int, jobs <-chan int, result chan<- int) {
+func worker(id int, jobs <-chan Job, result chan<- int) {
 	for j := range jobs {
-		fmt.Println("Worker", id, "started job", j)
+		fmt.Printf("Worker %d started job %s \n", id, j.Name)
 		// https://stackoverflow.com/questions/17573190/how-to-multiply-duration-by-integer
-		time.Sleep(time.Duration(int32(j*2) * int32(time.Second)))
-		fmt.Println("Worker", id, "finished job", j)
+		time.Sleep(time.Duration(int32(j.Value*2) * int32(time.Second)))
+		fmt.Printf("Worker %d finished job %s \n", id, j.Name)
 
-		result <- j * 2
+		result <- j.Value * 2
 	}
+}
+
+type Job struct {
+	Name  string
+	Value int
 }
 
 func main() {
 	const jobs_total = 5
 
-	jobs := make(chan int, jobs_total)
+	jobs := make(chan Job, jobs_total)
 	results := make(chan int, jobs_total)
 
 	// start up 3 workes
@@ -29,7 +34,7 @@ func main() {
 
 	// send 5 jobs
 	for j := 1; j <= jobs_total; j++ {
-		jobs <- j
+		jobs <- Job{Name: fmt.Sprintf("JOB_%d", j), Value: j}
 	}
 
 	nums := []int{}
