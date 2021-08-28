@@ -16,6 +16,7 @@ func main() {
 	}
 
 	wg.Wait()
+	fmt.Println("All Done!")
 }
 
 func worker(id int, wg *sync.WaitGroup) {
