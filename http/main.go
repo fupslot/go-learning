@@ -24,7 +24,7 @@ func main() {
 	fmt.Printf("\t%s\n", mime.TypeByExtension("xml"))
 	fmt.Println("----")
 
-	// printHeaders(res.Header)
+	printHeaders(res.Header)
 
 	// body, err := io.ReadAll(res.Body)
 	// if err != nil {
@@ -33,8 +33,6 @@ func main() {
 	// }
 
 	// fmt.Printf("%s", body)
-
-	// fmt.Printf("%+v", res)
 }
 
 func printHeaders(h http.Header) {
